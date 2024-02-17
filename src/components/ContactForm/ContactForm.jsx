@@ -7,12 +7,21 @@ import { addContact } from "../../redux/contactsSlice";
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
+
   const handleSubmit = (values, actions) => {
-    dispatch(addContact(values));
+    const newContact = {
+      id: values.id,
+      name: values.name,
+      number: values.number,
+    };
+
+    dispatch(addContact(newContact));
     actions.resetForm();
   };
+  const initialValues = { id: "", name: "", number: "" };
   const nameFieldId = useId();
   const numberFieldId = useId();
+
   const FeedbackSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, "Too Short!")
@@ -25,13 +34,13 @@ export const ContactForm = () => {
   });
   return (
     <Formik
-      initialValues={{ id: "", name: "", number: "" }}
+      initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={FeedbackSchema}
     >
       <Form className={css.contactForm}>
         <div className="inputBox">
-          <label htmlFor="nameFieldId">Name</label>
+          <label htmlFor={nameFieldId}>Name</label>
           <Field
             className={css.formField}
             id={nameFieldId}
@@ -42,7 +51,7 @@ export const ContactForm = () => {
         </div>
 
         <div className="inputBox">
-          <label htmlFor="numberFieldId">Number</label>
+          <label htmlFor={numberFieldId}>Number</label>
           <Field
             className={css.formField}
             id={numberFieldId}

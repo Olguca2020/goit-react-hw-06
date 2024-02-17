@@ -4,8 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeContact } from "../../redux/contactsSlice";
 
 export const ContactList = () => {
-  const contacts = useSelector((state) => state.contacts.items);
+  const contacts = useSelector((state) => state.contacts);
+  const filter = useSelector((state) => state.filters.name.toLowerCase());
   const dispatch = useDispatch();
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(filter)
+  );
 
   const handleContactDelete = (contactId) => {
     dispatch(removeContact(contactId));
@@ -13,7 +17,7 @@ export const ContactList = () => {
 
   return (
     <ul className={css.contactWrapper}>
-      {contacts.map((contact) => (
+      {filteredContacts.map((contact) => (
         <li key={contact.id}>
           <Contact
             name={contact.name}
