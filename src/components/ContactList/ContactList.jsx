@@ -13,7 +13,8 @@ export const ContactList = () => {
   );
 
   const handleContactDelete = (contactId) => {
-    dispatch(removeContact(contactId));
+    console.log(contactId);
+    dispatch(removeContact({ id: contactId }));
   };
 
   return (
